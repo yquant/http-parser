@@ -1,0 +1,51 @@
+# Copyright (c) 2015 yquant.com. All rights reserved.
+# Use of this source code is governed by LGPL with static linking exception
+# that can be found in the LICENSE file.
+
+config("http_parser_public_config") {
+  include_dirs = [ "." ]
+}
+
+static_library("http_parser_static") {
+  sources = [
+    "http_parser.c",
+  ]
+  
+  defines = [ "HTTP_PARSER_STRICT=0" ]
+  
+  public_configs = [
+    ":http_parser_public_config",
+  ]
+}
+
+static_library("http_parser_strict_static") {
+  sources = [
+    "http_parser.c",
+  ]
+  
+  defines = [ "HTTP_PARSER_STRICT=1" ]
+  
+  public_configs = [
+    ":http_parser_public_config",
+  ]
+}
+
+executable("http_parser_test-nonstrict") {
+  sources = [
+    "test.c",
+  ]
+  
+  deps = [
+    ":http_parser_static"
+  ]
+}
+
+executable("http_parser_test-strict") {
+  sources = [
+    "test.c",
+  ]
+  
+  deps = [
+    ":http_parser_strict_static"
+  ]
+}
